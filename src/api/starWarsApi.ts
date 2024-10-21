@@ -13,11 +13,14 @@ export const fetchData = async (ids: string[], endpoint: string) => {
     fetch(`${BASE_URL}/${endpoint}/${id}/`).then((response) => response.json())
   );
 
-  // Wait for all requests to settle (fulfilled or rejected)
   const results = await Promise.allSettled(requests);
 
-  // Process the results: return only fulfilled ones
   return results
     .filter((result) => result.status === "fulfilled")
     .map((result: any) => result.value);
+};
+
+export const fetchPersonById = async (id: string): Promise<IPerson> => {
+  const { data } = await axios.get<IPerson>(`${BASE_URL}/people/${id}`);
+  return data;
 };

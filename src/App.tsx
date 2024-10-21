@@ -1,12 +1,17 @@
-import { PersonList } from "./components/character-list/CharacterList";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import { Details, Home } from "./pages";
 
 import "./App.css";
 
 const App = () => {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <PersonList />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/person/:id" element={<Details />} />
+      </Routes>
+    </Router>
   );
 };
 

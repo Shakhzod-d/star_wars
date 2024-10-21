@@ -5,12 +5,13 @@ import ReactFlow, {
   Edge,
   Node,
 } from "react-flow-renderer";
-import { ICharacter, IFilms, IStarships } from "../../types/StarWarsTypes";
+import { IFilms, IPerson, IStarships } from "../../types/StarWarsTypes";
 
 import "./CharacterGraph.css";
+// import { MovieNode } from "../movie-node";
 
 interface CharacterGraphProps {
-  character: ICharacter | null;
+  character: IPerson | null;
   films: IFilms[] | null;
   starships: IStarships[] | null;
 }
@@ -37,7 +38,14 @@ export const CharacterGraph = ({
       nodes.push({
         id: `movie-id-${film.id}`,
         type: "default",
-        data: { label: `Movie: ${film.name}` },
+        data: {
+          label: `Movie: ${film.title}`,
+          details: `Release Date: ${film.release_date}\nDirector: ${film.director}\nEpisode: ${film.episode_id}\nProducer: ${film.producer}`,
+          // releaseDate: `Release Date: ${film.release_date}`,
+          // director: `Director: ${film.director}`,
+          // episode: `Episode: ${film.episode_id}`,
+          // producer: `Producer: ${film.producer}`,
+        },
         position: { x: 100 + index * 150, y: 200 },
         style: { background: "#28a745", color: "#fff" },
       });
@@ -61,7 +69,6 @@ export const CharacterGraph = ({
           style: { background: "#007bff", color: "#fff" },
         });
 
-        // Connect movie to starship
         edges.push({
           id: `edge-movie-starship-${film.id}-${starship.id}`,
           source: `movie-id-${film.id}`,
@@ -74,8 +81,17 @@ export const CharacterGraph = ({
   }
 
   return (
-    <div className="map">
-      <ReactFlow nodes={nodes} edges={edges} style={{ background: "#f0f0f0" }}>
+    <div className="map" style={{ width: "90%" }}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        // nodeTypes={{ custom: MovieNode }}
+        style={{
+          background: "#f0f0f0",
+          minWidth: "90% !important",
+          height: "80vh",
+        }}
+      >
         <MiniMap />
         <Controls />
         <Background />
